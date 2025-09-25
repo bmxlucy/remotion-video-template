@@ -1,0 +1,10 @@
+{
+  "title": "Master Social Media",
+  "subTitle": "Build your online presence",
+  "highlights": [
+    { "text": "Post consistently", "bgColor": "#2563eb" },
+    { "text": "Engage with audience", "bgColor": "#ff5900" },
+    { "text": "Use trending hashtags", "bgColor": "#fde047" }
+  ],
+  "ratio": "1:1"
+}
