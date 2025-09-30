@@ -1,7 +1,7 @@
 import { loadFont } from "@remotion/google-fonts/Geist";
 
 export const { fontFamily: FONT_FAMILY } = loadFont("normal", {
-  weights: ["400", "500", "600", "700"],
+  weights: ["400", "500", "600"],
   subsets: ["latin"],
 });
 

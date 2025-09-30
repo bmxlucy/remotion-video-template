@@ -1,19 +1,18 @@
 import React from "react";
 import { spring, useCurrentFrame, useVideoConfig } from "remotion";
-import { fitTextOnNLines } from "@remotion/layout-utils";
 import { FONT_FAMILY, SUBTITLE_COLOR } from "./constants";
-
-const maxFontSize = 40;
-const fontWeight = "400";
-const letterSpacing = "-0.02em";
 
 const subtitleStyle: React.CSSProperties = {
   fontFamily: FONT_FAMILY,
   color: SUBTITLE_COLOR,
-  fontWeight,
-  letterSpacing,
-  lineHeight: "1.2",
-  marginBottom: "60px",
+  fontSize: "2.5em",
+  fontWeight: "400",
+  letterSpacing: "-0.02em",
+  lineHeight: 1.2,
+  maxWidth: "100%",
+  paddingTop: "1em",
+  paddingBottom: "1.5em",
+  wordWrap: "break-word",
 };
 
 export const Subtitle: React.FC<{
@@ -46,25 +45,12 @@ export const Subtitle: React.FC<{
     },
   });
 
-  const fontSize = fitTextOnNLines({
-    text: subTitleText,
-    maxBoxWidth: videoConfig.width * 0.9,
-    maxLines: 3,
-    fontFamily: FONT_FAMILY,
-    fontWeight,
-    letterSpacing,
-    maxFontSize,
-    validateFontIsLoaded: true,
-  }).fontSize;
-
   return (
     <div
       style={{
         ...subtitleStyle,
-        fontSize,
         opacity,
         transform: `translateY(${translateY}px)`,
-        maxWidth: videoConfig.width * 0.9,
       }}
     >
       {subTitleText}

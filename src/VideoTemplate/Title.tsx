@@ -1,19 +1,17 @@
 import React from "react";
 import { spring, useCurrentFrame, useVideoConfig } from "remotion";
-import { fitTextOnNLines } from "@remotion/layout-utils";
 import { FONT_FAMILY, TITLE_COLOR } from "./constants";
-
-const maxFontSize = 120;
-const fontWeight = "600";
-const letterSpacing = "-0.02em";
 
 const titleStyle: React.CSSProperties = {
   fontFamily: FONT_FAMILY,
   color: TITLE_COLOR,
-  fontWeight,
-  letterSpacing,
-  lineHeight: "1.06",
-  marginBottom: "40px",
+  fontSize: "7.5em",
+  fontWeight: "600",
+  letterSpacing: "-0.02em",
+  lineHeight: 1.06,
+  margin: "0px",
+  maxWidth: "100%",
+  wordWrap: "break-word",
 };
 
 export const Title: React.FC<{
@@ -46,25 +44,12 @@ export const Title: React.FC<{
     },
   });
 
-  const fontSize = fitTextOnNLines({
-    text: titleText,
-    maxBoxWidth: videoConfig.width * 0.9,
-    maxLines: 2,
-    fontFamily: FONT_FAMILY,
-    fontWeight,
-    letterSpacing,
-    maxFontSize,
-    validateFontIsLoaded: true,
-  }).fontSize;
-
   return (
     <h1
       style={{
         ...titleStyle,
-        fontSize,
         opacity,
         transform: `translateY(${translateY}px)`,
-        maxWidth: videoConfig.width * 0.9,
       }}
     >
       {titleText}
