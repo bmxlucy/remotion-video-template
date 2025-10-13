@@ -6,23 +6,23 @@
   "license": "UNLICENSED",
   "private": true,
   "dependencies": {
-    "@remotion/cli": "^4.0.353",
-    "@remotion/google-fonts": "^4.0.353",
-    "@remotion/zod-types": "^4.0.353",
+    "@remotion/cli": "4.0.357",
+    "@remotion/google-fonts": "4.0.357",
+    "@remotion/zod-types": "4.0.357",
     "glob": "11.0.3",
-    "react": "19.1.1",
-    "react-dom": "19.1.1",
-    "remotion": "^4.0.353",
+    "react": "19.2.0",
+    "react-dom": "19.2.0",
+    "remotion": "4.0.357",
     "zod": "3.22.3"
   },
   "devDependencies": {
-    "@remotion/eslint-config-flat": "^4.0.353",
-    "@types/react": "19.1.13",
-    "@types/web": "^0.0.270",
-    "eslint": "9.36.0",
+    "@remotion/eslint-config-flat": "4.0.357",
+    "@types/react": "19.2.2",
+    "@types/web": "0.0.278",
+    "eslint": "9.37.0",
     "prettier": "3.6.2",
-    "ts-node": "^10.9.2",
-    "typescript": "5.9.2"
+    "ts-node": "10.9.2",
+    "typescript": "5.9.3"
   },
   "scripts": {
     "dev": "remotion studio",

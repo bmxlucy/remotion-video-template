@@ -6,9 +6,9 @@ import { Highlight } from "./VideoTemplate/Highlight";
 import { Subtitle } from "./VideoTemplate/Subtitle";
 import { Title } from "./VideoTemplate/Title";
 import { BACKGROUND_COLOR } from "./VideoTemplate/constants";
-import { useFitText } from "./utils/fitText";
+import { useFitText } from "./hooks/useFitText";
 
-const containerStyle: React.CSSProperties = {
+const rootStyle: React.CSSProperties = {
   backgroundColor: BACKGROUND_COLOR,
   display: "flex",
   alignItems: "center",
@@ -54,18 +54,13 @@ export const VideoTemplate: React.FC<z.infer<typeof videoTemplateSchema>> = ({
   const fontScale = useFitText(contentRef, containerWidth, containerHeight);
 
   return (
-    <AbsoluteFill style={containerStyle}>
+    <AbsoluteFill style={rootStyle}>
       <div
         ref={contentRef}
         style={{
-          display: "flex",
-          flexDirection: "column",
-          alignItems: "center",
-          justifyContent: "center",
-          width: containerWidth,
-          maxWidth: containerWidth,
-          maxHeight: containerHeight,
           fontSize: `${fontScale}em`,
+          maxWidth: `${containerWidth}px`,
+          width: "100%",
         }}
       >
         <Title titleText={title} />

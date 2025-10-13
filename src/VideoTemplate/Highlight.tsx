@@ -1,6 +1,7 @@
-import React from "react";
+import React, { useMemo } from "react";
 import { spring, useCurrentFrame, useVideoConfig } from "remotion";
 import { getContrastColor } from "../utils/colors";
+import { useLineSegments } from "../hooks/useLineSegments";
 import { FONT_FAMILY, HIGHLIGHT_COLOR } from "./constants";
 
 const TEXT_ENTRANCE_DURATION = 10;
@@ -20,24 +21,32 @@ const containerStyle: React.CSSProperties = {
   left: 0,
 };
 
-const textBaseStyle: React.CSSProperties = {
-  padding: "0.33em 0.66em",
+const linesWrapperStyle: React.CSSProperties = {
+  display: "flex",
+  flexDirection: "column",
+  alignItems: "center",
   maxWidth: "100%",
-  wordWrap: "break-word",
 };
 
-const highlightTextStyle: React.CSSProperties = {
-  ...textBaseStyle,
-  color: HIGHLIGHT_COLOR,
-  position: "absolute",
-};
-
-const backgroundTextStyle: React.CSSProperties = {
-  ...textBaseStyle,
-  position: "relative",
-  justifyContent: "center",
-  height: "100%",
+const lineStyle: React.CSSProperties = {
+  display: "block",
+  padding: "0.33em 0.66em",
+  margin: "0.0625em",
   borderRadius: "0.333em",
+  wordWrap: "break-word",
+  maxWidth: "100%",
+};
+
+const initialLinesWrapperStyle: React.CSSProperties = {
+  ...linesWrapperStyle,
+  position: "absolute",
+  color: HIGHLIGHT_COLOR,
+};
+
+const measureTextStyle: React.CSSProperties = {
+  ...lineStyle,
+  visibility: "hidden",
+  position: "absolute",
 };
 
 export const Highlight: React.FC<{
@@ -51,6 +60,8 @@ export const Highlight: React.FC<{
   const { fps } = videoConfig;
   const frame = useCurrentFrame();
   const adjustedFrame = frame - delay;
+
+  const { textRef, lineSegments } = useLineSegments(text);
 
   const textEntranceOpacity = spring({
     fps,
@@ -68,15 +79,15 @@ export const Highlight: React.FC<{
     config: { damping: 200 },
   });
 
-  const wipeProgress = spring({
-    fps,
-    frame: adjustedFrame - TEXT_ENTRANCE_DURATION,
-    durationInFrames: WIPE_DURATION,
-    config: { damping: 200 },
-  });
-
   const opacity =
     duration === Infinity || adjustedFrame < duration ? textEntranceOpacity : 0;
+
+  const wipePerLine = useMemo(
+    () => WIPE_DURATION / Math.max(lineSegments.length, 1),
+    [lineSegments.length],
+  );
+
+  const textColor = getContrastColor(bgColor);
 
   return (
     <div
@@ -87,17 +98,41 @@ export const Highlight: React.FC<{
         transform: `translateY(${textEntranceY}px)`,
       }}
     >
-      <div style={highlightTextStyle}>{text}</div>
-
-      <div
-        style={{
-          ...backgroundTextStyle,
-          backgroundColor: bgColor,
-          clipPath: `inset(0 ${100 - wipeProgress * 100}% 0 0)`,
-          color: getContrastColor(bgColor),
-        }}
-      >
+      <div ref={textRef} style={measureTextStyle}>
         {text}
+      </div>
+
+      <div style={initialLinesWrapperStyle}>
+        {lineSegments.map((segment, i) => (
+          <span key={i} style={lineStyle}>
+            {segment}
+          </span>
+        ))}
+      </div>
+
+      <div style={linesWrapperStyle}>
+        {lineSegments.map((segment, i) => {
+          const progress = spring({
+            fps,
+            frame: adjustedFrame - TEXT_ENTRANCE_DURATION - i * wipePerLine,
+            durationInFrames: wipePerLine,
+            config: { damping: 200 },
+          });
+
+          return (
+            <span
+              key={i}
+              style={{
+                ...lineStyle,
+                backgroundColor: bgColor,
+                color: textColor,
+                clipPath: `inset(0 ${100 - progress * 100}% 0 0)`,
+              }}
+            >
+              {segment}
+            </span>
+          );
+        })}
       </div>
     </div>
   );
